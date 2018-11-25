@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Screeny
+GenericName=Extended screenshot tool
+Comment=Screenshot tool with file upload
+Categories=Utility;Office;System
+Exec=com.github.siigdev.screeny
+Icon=application-default-icon
+Terminal=false
+Type=Application
+Keywords=Hello;World;Example;

@@ -17,7 +17,7 @@ namespace Screeny {
         }
         
         construct {            
-            label_beemy_info = new Gtk.Label ("Calculate your Body Mass Index:");
+            label_beemy_info = new Gtk.Label ("Screeny initial label :)");
             stack = new Gtk.Stack ();
             stack.add (label_beemy_info);
             stack.set_visible_child (label_beemy_info);

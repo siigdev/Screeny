@@ -1,17 +1,29 @@
 namespace Screeny {
     public class MainWindow : Gtk.Window {
-        public string title_name = "Screeny";
-        public int window_x;
-        public int window_y;
+        //public int window_x;
+        //public int window_y;
+        public Gtk.Label label_beemy_info;
+        public Gtk.Stack stack;
 
         public MainWindow (Gtk.Application application) {
-            set_title (this.title_name);
-
+            GLib.Object (application: application,
+                 icon_name: "com.github.siigdev.screeny",
+                 resizable: false,
+                 title: "Screeny1",
+                 height_request: 450,
+                 width_request: 450,
+                 border_width: 6
+            );
         }
-        construct {
-            var screenshot_method = new Gtk.RadioButton (null);
-            
-            var radio_buttons_grid = new Gtk.Grid ();
+        
+        construct {            
+            label_beemy_info = new Gtk.Label ("Calculate your Body Mass Index:");
+            stack = new Gtk.Stack ();
+            stack.add (label_beemy_info);
+            stack.set_visible_child (label_beemy_info);
+            stack.show_all ();
+            this.add (stack);
+            stack.show_all ();
 
         }
     }

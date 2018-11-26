@@ -8,6 +8,7 @@ namespace Screeny {
         public Gtk.RadioButton radio_select_window;
         public Gtk.RadioButton radio_select_area;
         public Gtk.Button close_btn;
+        public Gtk.Switch pointer_switch;
         
 
         public MainWindow (Gtk.Application application) {
@@ -59,6 +60,8 @@ namespace Screeny {
             radio_select_area = new Gtk.RadioButton.from_widget(radio_select_screen);
             radio_select_area.tooltip_text = ("Grab a selected area");
 
+            pointer_switch = new Gtk.Switch ();
+
             close_btn = new Gtk.Button.with_label ("Close");
         }
 
@@ -74,6 +77,7 @@ namespace Screeny {
             radio_selection_grid.add(radio_select_window);
             radio_selection_grid.add(radio_select_area);
             radio_selection_grid.add(close_btn);
+            radio_selection_grid.add(pointer_switch);
 
         }
 

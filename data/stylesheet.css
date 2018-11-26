@@ -1,0 +1,9 @@
+@define-color colorPrimary #f5f5f5;
+@define-color appPrimary #c6262e;
+@define-color textColorPrimary #333333;
+
+.titlebar {
+    background-color: @colorPrimary;
+    border: none;
+    color: @textColorPrimary;
+}

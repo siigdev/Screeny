@@ -7,6 +7,8 @@ namespace Screeny {
         public Gtk.RadioButton radio_select_screen; 
         public Gtk.RadioButton radio_select_window;
         public Gtk.RadioButton radio_select_area;
+        public Gtk.Button close_btn;
+        
 
         public MainWindow (Gtk.Application application) {
             GLib.Object (application: application,
@@ -19,15 +21,32 @@ namespace Screeny {
             );
         }
         
-        construct {     
+        construct {   
+            //Stylesheet provider
+            var cssprovider = new Gtk.CssProvider ();
+            cssprovider.load_from_resource ("/com/github/siigdev/screeny/stylesheet.css");
+            Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), cssprovider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+            create_header();  
             create_screenshot_view();
             create_grid();           
             create_stack();
             create_view();
 
+            create_button_functionality();
+
+        }
+        private Gtk.HeaderBar titlebar;
+        public void create_header() {
+            titlebar = new Gtk.HeaderBar();
+            titlebar.has_subtitle = false;
+            titlebar.show_close_button = true;
+            var titlebar_style_context = titlebar.get_style_context ();
+            titlebar_style_context.add_class (Gtk.STYLE_CLASS_FLAT);
+            titlebar_style_context.add_class ("default-decoration");
         }
         public void create_screenshot_view() {
-            label_screeny = new Gtk.Label ("Screeny");
+            label_screeny = new Gtk.Label ("Screeny :)");
             label_screeny.set_halign (Gtk.Align.CENTER);
 
             radio_select_screen = new Gtk.RadioButton.from_widget(null);
@@ -39,6 +58,8 @@ namespace Screeny {
 
             radio_select_area = new Gtk.RadioButton.from_widget(radio_select_screen);
             radio_select_area.tooltip_text = ("Grab a selected area");
+
+            close_btn = new Gtk.Button.with_label ("Close");
         }
 
         private Gtk.Grid radio_selection_grid;
@@ -52,6 +73,7 @@ namespace Screeny {
             radio_selection_grid.add(radio_select_screen);
             radio_selection_grid.add(radio_select_window);
             radio_selection_grid.add(radio_select_area);
+            radio_selection_grid.add(close_btn);
 
         }
 
@@ -61,7 +83,11 @@ namespace Screeny {
         public void gif_grid()  {
 
         }
-
+        public void create_button_functionality() {
+            close_btn.clicked.connect (() => {
+                destroy ();
+            });
+        }
         public void create_stack() {
             stack = new Gtk.Stack();
             stack.add(radio_selection_grid);
@@ -70,6 +96,7 @@ namespace Screeny {
         public void create_view() {
             this.add(stack);
             stack.show_all();
+            this.set_titlebar (titlebar);
         }
     }
 }

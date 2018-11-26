@@ -2,8 +2,11 @@ namespace Screeny {
     public class MainWindow : Gtk.Window {
         //public int window_x;
         //public int window_y;
-        public Gtk.Label label_beemy_info;
         public Gtk.Stack stack;
+        public Gtk.Label label_screeny;
+        public Gtk.RadioButton radio_select_screen; 
+        public Gtk.RadioButton radio_select_window;
+        public Gtk.RadioButton radio_select_area;
 
         public MainWindow (Gtk.Application application) {
             GLib.Object (application: application,
@@ -16,20 +19,32 @@ namespace Screeny {
             );
         }
         
-        construct {            
-            stack = new Gtk.Stack ();
-            
-            var radio_select_screen = new Gtk.RadioButton.from_widget(null);
+        construct {     
+            create_screenshot_view();
+            create_grid();           
+            create_stack();
+            create_view();
+
+        }
+        public void create_screenshot_view() {
+            label_screeny = new Gtk.Label ("Screeny");
+            label_screeny.set_halign (Gtk.Align.CENTER);
+
+            radio_select_screen = new Gtk.RadioButton.from_widget(null);
             radio_select_screen.tooltip_text = ("Grab the whole screen");
             radio_select_screen.set_active(true);
 
-            var radio_select_window = new Gtk.RadioButton.from_widget(radio_select_screen);
+            radio_select_window = new Gtk.RadioButton.from_widget(radio_select_screen);
             radio_select_window.tooltip_text = ("Grab the current window");
 
-            var radio_select_area = new Gtk.RadioButton.from_widget(radio_select_screen);
+            radio_select_area = new Gtk.RadioButton.from_widget(radio_select_screen);
             radio_select_area.tooltip_text = ("Grab a selected area");
+        }
 
-            var radio_selection_grid = new Gtk.Grid();
+        private Gtk.Grid radio_selection_grid;
+        public void create_grid() {
+            radio_selection_grid = new Gtk.Grid();
+            radio_selection_grid.add(label_screeny);
             radio_selection_grid.halign = Gtk.Align.CENTER;
             radio_selection_grid.get_style_context().add_class (Gtk.STYLE_CLASS_FLAT);
             radio_selection_grid.margin_top = 10;
@@ -37,11 +52,24 @@ namespace Screeny {
             radio_selection_grid.add(radio_select_screen);
             radio_selection_grid.add(radio_select_window);
             radio_selection_grid.add(radio_select_area);
-            stack.add (radio_selection_grid);
-            //stack.set_visible_child (label_beemy_info);
-            stack.show_all ();
-            this.add (stack);
 
+        }
+
+        public void create_gif_view()  {
+            
+        }
+        public void gif_grid()  {
+
+        }
+
+        public void create_stack() {
+            stack = new Gtk.Stack();
+            stack.add(radio_selection_grid);
+            stack.set_visible_child(radio_selection_grid);
+        }
+        public void create_view() {
+            this.add(stack);
+            stack.show_all();
         }
     }
 }

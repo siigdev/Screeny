@@ -20,6 +20,7 @@ namespace Screeny {
         public Gtk.SpinButton delay_spinner;
         public Gtk.Label delay_label;
         public Gtk.Stack stack;
+        public Settings settings;
         
         public MainWindow (Gtk.Application application) {
             GLib.Object (application: application,
@@ -141,7 +142,7 @@ namespace Screeny {
             screenshot_grid.attach(delay_spinner, 1, 5, 1, 1);
             screenshot_grid.attach(actions, 0, 6, 2, 1);
         }
-        
+
         public void create_stack() {
             stack = new Gtk.Stack();
             stack.margin = 6;
@@ -151,6 +152,18 @@ namespace Screeny {
             stack.set_visible_child(screenshot_grid);
         }
         public void create_button_functionality() {
+            settings = new Settings ("com.github.siigdev.screeny");
+            switch (settings.get_enum("last-capture-mode")) {
+                case 1:
+                    capture_mode = CaptureType.CURR_WINDOW;
+                    radio_select_window.active = true;
+                    break;
+                case 2:
+                    capture_mode = CaptureType.AREA;
+                    radio_select_area.active = true;
+                    break;
+            }
+
             radio_select_window.toggled.connect (() => {
                 capture_mode = CaptureType.CURR_WINDOW;
             });

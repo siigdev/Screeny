@@ -1,7 +1,9 @@
 namespace Screeny {
     public class MainWindow : Gtk.ApplicationWindow {
-        //public int window_x;
-        //public int window_y;
+        private enum CaptureType{
+            SCREEN, CURR_WINDOW, AREA, GIF
+        }
+        private CaptureType capture_mode;
         public Gtk.RadioButton radio_select_screen; 
         public Gtk.RadioButton radio_select_window;
         public Gtk.RadioButton radio_select_area;
@@ -149,6 +151,18 @@ namespace Screeny {
             stack.set_visible_child(screenshot_grid);
         }
         public void create_button_functionality() {
+            radio_select_window.toggled.connect (() => {
+                capture_mode = CaptureType.CURR_WINDOW;
+            });
+            radio_select_screen.toggled.connect (() => {
+                capture_mode = CaptureType.SCREEN;
+            });
+            radio_select_area.toggled.connect (() => {
+                capture_mode = CaptureType.AREA;
+            });
+            radio_select_gif.toggled.connect (() => {
+                capture_mode = CaptureType.GIF;
+            });
             close_btn.clicked.connect (() => {
                 destroy ();
             });

@@ -6,6 +6,8 @@ namespace Screeny {
         public Gtk.RadioButton radio_select_screen; 
         public Gtk.RadioButton radio_select_window;
         public Gtk.RadioButton radio_select_area;
+        public Gtk.RadioButton radio_select_screenshot;
+        public Gtk.RadioButton radio_select_gif;
         public Gtk.Button close_btn;
         public Gtk.Button capture_btn;
         public Gtk.ButtonBox actions;
@@ -51,7 +53,15 @@ namespace Screeny {
             titlebar_style_context.add_class ("default-decoration");
         }
         private Gtk.Grid radio_selection_grid;
+        private Gtk.Grid radio_type_selection_grid;
         public void create_screenshot_view() {
+
+            //Radio buttons for type screenshot vs gif
+            radio_select_screenshot = new Gtk.RadioButton.from_widget(null);
+            radio_select_screenshot.tooltip_text = ("Capture a screenshot");
+            radio_select_screenshot.set_active(true);
+            radio_select_gif = new Gtk.RadioButton.from_widget(radio_select_screenshot);
+            radio_select_gif.tooltip_text = ("Capture a GIF animation");
 
             //Radio buttons for screenshot grabbing methods
             radio_select_screen = new Gtk.RadioButton.from_widget(null);
@@ -64,10 +74,17 @@ namespace Screeny {
             radio_select_area = new Gtk.RadioButton.from_widget(radio_select_screen);
             radio_select_area.tooltip_text = ("Grab a selected area");
 
+            //Method selection grid
+            radio_type_selection_grid = new Gtk.Grid();
+            radio_type_selection_grid.halign = Gtk.Align.CENTER;
+            radio_type_selection_grid.column_spacing = 10;
+            radio_type_selection_grid.add(radio_select_screenshot);
+            radio_type_selection_grid.add(radio_select_gif);
+
             //Adding screenshot selection grid
             radio_selection_grid = new Gtk.Grid();
             radio_selection_grid.halign = Gtk.Align.CENTER;
-            radio_selection_grid.column_spacing = 5;
+            radio_selection_grid.column_spacing = 10;
             radio_selection_grid.add(radio_select_screen);
             radio_selection_grid.add(radio_select_window);
             radio_selection_grid.add(radio_select_area);
@@ -104,7 +121,8 @@ namespace Screeny {
             selection_grid.margin_top = 0;
             selection_grid.row_spacing = 6;
             selection_grid.column_spacing = 12;
-            selection_grid.attach(radio_selection_grid, 0, 0, 2, 1);
+            selection_grid.attach(radio_type_selection_grid, 0, 0, 2, 1);
+            selection_grid.attach(radio_selection_grid, 0, 1, 2, 1);
             selection_grid.attach(pointer_label, 0, 2, 1, 1);
             selection_grid.attach(pointer_switch, 1, 2, 1, 1);
             selection_grid.attach(delay_label, 0, 3, 1, 1);

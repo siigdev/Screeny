@@ -13,17 +13,18 @@ namespace Screeny {
         public Gtk.ButtonBox actions;
         public Gtk.Switch pointer_switch;
         public Gtk.Label pointer_label;
+        public Gtk.Switch websave_switch;
+        public Gtk.Label websave_label;
         public Gtk.SpinButton delay_spinner;
         public Gtk.Label delay_label;
         
-
         public MainWindow (Gtk.Application application) {
             GLib.Object (application: application,
                  icon_name: "com.github.siigdev.screeny",
                  resizable: false,
                  title: "Screeny",
-                 height_request: 450,
-                 width_request: 450,
+                 height_request: 350,
+                 width_request: 350,
                  border_width: 6
             );
         }
@@ -43,6 +44,7 @@ namespace Screeny {
             create_button_functionality();
 
         }
+
         private Gtk.HeaderBar titlebar;
         public void create_header() {
             titlebar = new Gtk.HeaderBar();
@@ -52,6 +54,7 @@ namespace Screeny {
             titlebar_style_context.add_class (Gtk.STYLE_CLASS_FLAT);
             titlebar_style_context.add_class ("default-decoration");
         }
+
         private Gtk.Grid radio_selection_grid;
         private Gtk.Grid radio_type_selection_grid;
         public void create_screenshot_view() {
@@ -67,14 +70,12 @@ namespace Screeny {
             radio_select_screen = new Gtk.RadioButton.from_widget(null);
             radio_select_screen.tooltip_text = ("Grab the whole screen");
             radio_select_screen.set_active(true);
-
             radio_select_window = new Gtk.RadioButton.from_widget(radio_select_screen);
             radio_select_window.tooltip_text = ("Grab the current window");
-
             radio_select_area = new Gtk.RadioButton.from_widget(radio_select_screen);
             radio_select_area.tooltip_text = ("Grab a selected area");
 
-            //Method selection grid
+            //Type selection grid for screenshot vs gif
             radio_type_selection_grid = new Gtk.Grid();
             radio_type_selection_grid.halign = Gtk.Align.CENTER;
             radio_type_selection_grid.column_spacing = 10;
@@ -94,6 +95,12 @@ namespace Screeny {
             pointer_label.halign = Gtk.Align.END;
             pointer_switch = new Gtk.Switch ();
             pointer_switch.halign = Gtk.Align.START;
+
+            //Save to web settings
+            websave_label = new Gtk.Label("Save to the web");
+            websave_label.halign = Gtk.Align.END;
+            websave_switch = new Gtk.Switch ();
+            websave_switch.halign = Gtk.Align.START;
 
             //Screenshot delay in seconds
             delay_label = new Gtk.Label("Delay in seconds");
@@ -125,10 +132,11 @@ namespace Screeny {
             selection_grid.attach(radio_selection_grid, 0, 1, 2, 1);
             selection_grid.attach(pointer_label, 0, 2, 1, 1);
             selection_grid.attach(pointer_switch, 1, 2, 1, 1);
-            selection_grid.attach(delay_label, 0, 3, 1, 1);
-            selection_grid.attach(delay_spinner, 1, 3, 1, 1);
-            selection_grid.attach(actions, 0, 4, 2, 1);
-
+            selection_grid.attach(websave_label, 0, 3, 1, 1);
+            selection_grid.attach(websave_switch, 1, 3, 1, 1);
+            selection_grid.attach(delay_label, 0, 4, 1, 1);
+            selection_grid.attach(delay_spinner, 1, 4, 1, 1);
+            selection_grid.attach(actions, 0, 5, 2, 1);
         }
 
         public void create_gif_view()  {

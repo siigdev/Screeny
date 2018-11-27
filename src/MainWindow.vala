@@ -3,12 +3,16 @@ namespace Screeny {
         //public int window_x;
         //public int window_y;
         public Gtk.Stack stack;
-        public Gtk.Label label_screeny;
         public Gtk.RadioButton radio_select_screen; 
         public Gtk.RadioButton radio_select_window;
         public Gtk.RadioButton radio_select_area;
         public Gtk.Button close_btn;
+        public Gtk.Button capture_btn;
+        public Gtk.ButtonBox actions;
         public Gtk.Switch pointer_switch;
+        public Gtk.Label pointer_label;
+        public Gtk.SpinButton delay_spinner;
+        public Gtk.Label delay_label;
         
 
         public MainWindow (Gtk.Application application) {
@@ -46,10 +50,10 @@ namespace Screeny {
             titlebar_style_context.add_class (Gtk.STYLE_CLASS_FLAT);
             titlebar_style_context.add_class ("default-decoration");
         }
+        private Gtk.Grid radio_selection_grid;
         public void create_screenshot_view() {
-            label_screeny = new Gtk.Label ("Screeny :)");
-            label_screeny.set_halign (Gtk.Align.CENTER);
 
+            //Radio buttons for screenshot grabbing methods
             radio_select_screen = new Gtk.RadioButton.from_widget(null);
             radio_select_screen.tooltip_text = ("Grab the whole screen");
             radio_select_screen.set_active(true);
@@ -60,24 +64,52 @@ namespace Screeny {
             radio_select_area = new Gtk.RadioButton.from_widget(radio_select_screen);
             radio_select_area.tooltip_text = ("Grab a selected area");
 
-            pointer_switch = new Gtk.Switch ();
-
-            close_btn = new Gtk.Button.with_label ("Close");
-        }
-
-        private Gtk.Grid radio_selection_grid;
-        public void create_grid() {
+            //Adding screenshot selection grid
             radio_selection_grid = new Gtk.Grid();
-            radio_selection_grid.add(label_screeny);
             radio_selection_grid.halign = Gtk.Align.CENTER;
-            radio_selection_grid.get_style_context().add_class (Gtk.STYLE_CLASS_FLAT);
-            radio_selection_grid.margin_top = 10;
-            radio_selection_grid.column_spacing = 10;
+            radio_selection_grid.column_spacing = 5;
             radio_selection_grid.add(radio_select_screen);
             radio_selection_grid.add(radio_select_window);
             radio_selection_grid.add(radio_select_area);
-            radio_selection_grid.add(close_btn);
-            radio_selection_grid.add(pointer_switch);
+
+            //Grab mouse pointer settings
+            pointer_label = new Gtk.Label("Grab mouse pointer");
+            pointer_label.halign = Gtk.Align.END;
+            pointer_switch = new Gtk.Switch ();
+            pointer_switch.halign = Gtk.Align.START;
+
+            //Screenshot delay in seconds
+            delay_label = new Gtk.Label("Delay in seconds");
+            delay_label.halign = Gtk.Align.END;
+            delay_spinner = new Gtk.SpinButton.with_range(0,15,1);
+
+            //Close and capture buttonbox
+            close_btn = new Gtk.Button.with_label ("Close");
+            capture_btn = new Gtk.Button.with_label ("Capture Screenshot");
+            capture_btn.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            actions = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
+            actions.halign = Gtk.Align.END;
+            actions.margin_top = 24;
+            actions.spacing = 6;
+            actions.add(close_btn);
+            actions.add(capture_btn);
+        }
+
+        private Gtk.Grid selection_grid;
+        public void create_grid() {
+            selection_grid = new Gtk.Grid();
+            selection_grid.halign = Gtk.Align.CENTER;
+            selection_grid.get_style_context().add_class (Gtk.STYLE_CLASS_FLAT);
+            selection_grid.margin = 6;
+            selection_grid.margin_top = 0;
+            selection_grid.row_spacing = 6;
+            selection_grid.column_spacing = 12;
+            selection_grid.attach(radio_selection_grid, 0, 0, 2, 1);
+            selection_grid.attach(pointer_label, 0, 2, 1, 1);
+            selection_grid.attach(pointer_switch, 1, 2, 1, 1);
+            selection_grid.attach(delay_label, 0, 3, 1, 1);
+            selection_grid.attach(delay_spinner, 1, 3, 1, 1);
+            selection_grid.attach(actions, 0, 4, 2, 1);
 
         }
 
@@ -94,8 +126,8 @@ namespace Screeny {
         }
         public void create_stack() {
             stack = new Gtk.Stack();
-            stack.add(radio_selection_grid);
-            stack.set_visible_child(radio_selection_grid);
+            stack.add(selection_grid);
+            stack.set_visible_child(selection_grid);
         }
         public void create_view() {
             this.add(stack);

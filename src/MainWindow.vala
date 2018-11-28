@@ -4,6 +4,7 @@ namespace Screeny {
             SCREEN, CURR_WINDOW, AREA, GIF
         }
         private CaptureType capture_mode;
+        private Settings settings;
         public Gtk.RadioButton radio_select_screen; 
         public Gtk.RadioButton radio_select_window;
         public Gtk.RadioButton radio_select_area;
@@ -19,8 +20,9 @@ namespace Screeny {
         public Gtk.Label clipboard_label;
         public Gtk.SpinButton delay_spinner;
         public Gtk.Label delay_label;
+        private int delay;
         public Gtk.Stack stack;
-        public Settings settings;
+        
         
         public MainWindow (Gtk.Application application) {
             GLib.Object (application: application,
@@ -38,7 +40,7 @@ namespace Screeny {
             var cssprovider = new Gtk.CssProvider ();
             cssprovider.load_from_resource ("/com/github/siigdev/screeny/stylesheet.css");
             Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), cssprovider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-            set_keep_above (true);
+            
 
             create_titlebar();  
 
@@ -49,7 +51,6 @@ namespace Screeny {
 
             create_view();
             create_button_functionality();
-
         }
         public Gtk.HeaderBar titlebar;
         public void create_titlebar() {
@@ -81,8 +82,7 @@ namespace Screeny {
             titlebar.set_custom_title (radio_screenshot_grid);
             var titlebar_style_context = titlebar.get_style_context ();
             titlebar_style_context.add_class (Gtk.STYLE_CLASS_FLAT);
-            titlebar_style_context.add_class ("default-decoration");
-            
+            titlebar_style_context.add_class ("default-decoration");   
         }
 
         private Gtk.Grid radio_screenshot_grid;
@@ -131,7 +131,6 @@ namespace Screeny {
             screenshot_grid.row_spacing = 6;
             screenshot_grid.column_spacing = 6;
             screenshot_grid.row_spacing = 6;
-            //screenshot_grid.attach(radio_screenshot_grid, 0, 1, 2, 1);
             screenshot_grid.attach(pointer_label, 0, 2, 1, 1);
             screenshot_grid.attach(pointer_switch, 1, 2, 1, 1);
             screenshot_grid.attach(websave_label, 0, 3, 1, 1);
@@ -153,35 +152,33 @@ namespace Screeny {
         }
         public void create_button_functionality() {
             settings = new Settings ("com.github.siigdev.screeny");
-            switch (settings.get_enum("last-capture-mode")) {
-                case 1:
-                    capture_mode = CaptureType.CURR_WINDOW;
-                    radio_select_window.active = true;
-                    break;
-                case 2:
-                    capture_mode = CaptureType.AREA;
-                    radio_select_area.active = true;
-                    break;
-            }
-
+            
             radio_select_window.toggled.connect (() => {
                 capture_mode = CaptureType.CURR_WINDOW;
+                settings.set_enum("last-capture-mode", capture_mode);
             });
             radio_select_screen.toggled.connect (() => {
                 capture_mode = CaptureType.SCREEN;
+                settings.set_enum("last-capture-mode", capture_mode);
             });
             radio_select_area.toggled.connect (() => {
                 capture_mode = CaptureType.AREA;
+                settings.set_enum("last-capture-mode", capture_mode);
             });
             radio_select_gif.toggled.connect (() => {
                 capture_mode = CaptureType.GIF;
+                settings.set_enum("last-capture-mode", capture_mode);
             });
             close_btn.clicked.connect (() => {
                 destroy ();
             });
+            delay_spinner.value_changed.connect (() => {
+                delay = delay_spinner.get_value_as_int ();
+            });
         }
 
         public void create_view() {
+            
             this.add(stack);
             this.set_titlebar(titlebar);
             this.show_all();

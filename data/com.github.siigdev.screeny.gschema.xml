@@ -1,0 +1,8 @@
+<schemalist>
+    <schema id="com.github.siigdev.screeny" path="/com/github/siigdev/screeny/" gettext-domain="screeny">
+        <key name="delay" type="i">
+            <range min="0" max="15"/>
+            <default>0</default>
+        </key>
+    </schema>
+</schemalist>

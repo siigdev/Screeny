@@ -22,6 +22,13 @@ namespace Screenshot.Widgets {
             );
         }
         construct {
+            set_keep_above (true);
+
+            var folder_dir = Environment.get_user_special_dir (UserDirectory.PICTURES)
+                +  "%c".printf(GLib.Path.DIR_SEPARATOR) + ScreenshotApp.SAVE_FOLDER;
+            
+            ScreenshotApp.create_dir_if_missing (folder_dir);
+
             dialog_label = new Gtk.Label ("Save Screenshot as...");
             name_label = new Gtk.Label ("Name: ");
             name_entry = new Gtk.Entry ();
@@ -42,7 +49,7 @@ namespace Screenshot.Widgets {
 
             folder_label = new Gtk.Label ("Folder: ");
             folder_chooser = new Gtk.FileChooserButton("Select Screenshots Folder…"), Gtk.FileChooserAction.SELECT_FOLDER); 
-            //folder_chooser.set_current_folder (folder_dir);
+            folder_chooser.set_current_folder (folder_dir);
 
 
 

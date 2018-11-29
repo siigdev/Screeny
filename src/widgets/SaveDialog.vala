@@ -1,6 +1,7 @@
 namespace Screenshot.Widgets {
     public class SaveDialog : Gtk.Dialog {
         public Settings settings { get; construct; }
+        public Gtk.Image preview_image;
         public Gtk.Label dialog_label;
         public Gtk.Label name_label;
         public Gtk.Label format_label;
@@ -10,6 +11,7 @@ namespace Screenshot.Widgets {
         public Gtk.ComboBoxText format_combobox;
         public Gtk.ComboBoxText web_combobox;
         public Gtk.FileChooserButton folder_chooser;
+        public Gtk.Grid grid;
 
         public SaveDialog () {
             GLib.Object (application: application,
@@ -29,6 +31,8 @@ namespace Screenshot.Widgets {
             
             ScreenshotApp.create_dir_if_missing (folder_dir);
 
+            preview_image = new Gtk.Image();
+
             dialog_label = new Gtk.Label ("Save Screenshot as...");
             name_label = new Gtk.Label ("Name: ");
             name_entry = new Gtk.Entry ();
@@ -37,10 +41,10 @@ namespace Screenshot.Widgets {
 
             format_label = new Gtk.Label ("Format: ");
             format_combobox = new Gtk.ComboBoxText();
-            format_cmb.append_text ("png");
-            format_cmb.append_text ("jpeg");
-            format_cmb.append_text ("bmp");
-            format_cmb.append_text ("pdf");
+            format_combobox.append_text ("png");
+            format_combobox.append_text ("jpeg");
+            format_combobox.append_text ("bmp");
+            format_combobox.append_text ("pdf");
 
             web_label = new Gtk.Label ("Upload: ");
             web_combobox = new Gtk.ComboBoxText();
@@ -52,7 +56,18 @@ namespace Screenshot.Widgets {
             folder_chooser.set_current_folder (folder_dir);
 
 
-
+            grid = new Gtk.Grid();
+            grid.margin = 6;
+            grid.attach(preview_image, 0, 0, 2, 1);
+            grid.attach(dialog_label, 0, 1, 2, 1);
+            grid.attach(name_label, 0, 2, 1, 1);
+            grid.attach(name_entry, 1, 2, 1, 1);
+            grid.attach(format_label, 0, 3, 1, 1);
+            grid.attach(format_combobox, 1, 3, 1, 1);
+            grid.attach(web_label, 0, 4, 1, 1);
+            grid.attach(web_combobox, 1, 4, 1, 1);
+            grid.attach(folder_label, 0, 5, 1, 1);
+            grid.attach(folder_chooser, 1, 5, 1, 1);
 
 
 

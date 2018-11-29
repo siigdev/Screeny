@@ -4,9 +4,11 @@ namespace Screenshot.Widgets {
         public Gtk.Label dialog_label;
         public Gtk.Label name_label;
         public Gtk.Label format_label;
+        public Gtk.Label web_label;
         public Gtk.Label folder_label
         public Gtk.Entry name_entry;
         public Gtk.ComboBoxText format_combobox;
+        public Gtk.ComboBoxText web_combobox;
         public Gtk.FileChooserButton folder_chooser;
 
         public SaveDialog () {
@@ -26,11 +28,17 @@ namespace Screenshot.Widgets {
             name_entry.hexpand = true;
             //name_entry.text = file_name;
 
+            format_label = new Gtk.Label ("Format: ");
             format_combobox = new Gtk.ComboBoxText();
             format_cmb.append_text ("png");
             format_cmb.append_text ("jpeg");
             format_cmb.append_text ("bmp");
             format_cmb.append_text ("pdf");
+
+            web_label = new Gtk.Label ("Upload: ");
+            web_combobox = new Gtk.ComboBoxText();
+            web_combobox.append_text ("Imgur");
+            web_combobox.append_text ("Cloudinary");
 
             folder_label = new Gtk.Label ("Folder: ");
             folder_chooser = new Gtk.FileChooserButton("Select Screenshots Folder…"), Gtk.FileChooserAction.SELECT_FOLDER); 
